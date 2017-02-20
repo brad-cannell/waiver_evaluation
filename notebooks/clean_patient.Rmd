@@ -1,0 +1,29 @@
+---
+title: "Clean Patient Table"
+date: "`r Sys.Date()`"
+output: 
+  html_notebook:
+    toc: true
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    # css: custom-css.css
+  word_document:
+    reference_docx: word_style_template_01.docx
+---
+
+```{r load_packages, message=FALSE}
+# Load packages
+library(tidyverse)
+```
+
+
+-------------------------------------------------------------------------------
+
+&nbsp;
+
+#### Session Info:
+```{r session_info, echo=FALSE}
+sessionInfo()
+```

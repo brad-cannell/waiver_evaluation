@@ -1,0 +1,95 @@
+---
+title: "Connecting to MS SQL Database"
+date: "`r Sys.Date()`"
+output: 
+  html_notebook:
+    toc: true
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    # css: custom-css.css
+  word_document:
+    reference_docx: word_style_template_01.docx
+---
+
+```{r load_packages, message=FALSE}
+# Load packages
+library(tidyverse)
+library(RODBC)
+```
+
+# Useful websites
+
+http://www.statmethods.net/input/dbinterface.html
+
+# Open a connection to an ODBC database
+
+```{r}
+con <- odbcConnect(dsn = "CCM", uid = "CCS-RPTSQLUser", pwd = "CCS2016UNT")
+```
+
+# Read tables from database into a data frame
+
+Create a character vector containing the names of the tables of interest
+
+```{r}
+tables <- c(
+  "HealthCareVisitEvent",
+  "HospitalizationEvent",
+  "OutpatientProcedureEvent",
+  "Patient",
+  "PatientAdmissionStatus",
+  "PatientTMDischargeForm",
+  "PeopleLivingInHome",
+  "PostHospitalizationForm"
+)
+```
+
+Read in the tables of interest
+
+```{r}
+for (t in tables) {
+  nam <- paste0(t)               # Grab table name
+  assign(nam,  sqlFetch(con, t)) # Create a df by the same name and populate it with values from table
+}
+
+rm(t, nam)
+```
+
+# Save tables
+
+As RData binary files
+
+```{r}
+for (t in tables) {
+  p <- paste0("../data/", t, ".RData")
+  write_rds(x = t, path = p)
+}
+```
+
+
+# Close the connection
+
+```{r}
+odbcClose(con)
+rm(con)
+cat("Done")
+```
+
+Clean up the environment
+
+```{r}
+rm(list = ls())
+cat("Done")
+```
+
+
+-------------------------------------------------------------------------------
+
+&nbsp;
+
+#### Session Info:
+```{r session_info, echo=FALSE}
+sessionInfo()
+```
