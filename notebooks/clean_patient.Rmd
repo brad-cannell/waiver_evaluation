@@ -18,6 +18,13 @@ output:
 library(tidyverse)
 ```
 
+# Load patient table
+
+```{r}
+patient <- read_rds(path = "../data/Patient.RData")
+```
+
+
 
 -------------------------------------------------------------------------------
 

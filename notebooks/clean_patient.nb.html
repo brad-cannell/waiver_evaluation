@@ -172,6 +172,11 @@ $(document).ready(function () {
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#load-patient-table">Load patient table</a></li>
+</ul>
+</div>
 
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
@@ -179,6 +184,15 @@ $(document).ready(function () {
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIHBhY2thZ2VzXG5saWJyYXJ5KHRpZHl2ZXJzZSlcbmBgYCJ9 -->
 <pre class="r"><code># Load packages
 library(tidyverse)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<div id="load-patient-table" class="section level1">
+<h1>Load patient table</h1>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGF0aWVudCA8LSByZWFkX3JkcyhwYXRoID0gXCIuLi9kYXRhL1BhdGllbnQuUkRhdGFcIilcbmBgYCJ9 -->
+<pre class="r"><code>patient &lt;- read_rds(path = &quot;../data/Patient.RData&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -190,8 +204,9 @@ library(tidyverse)</code></pre>
 <!-- rnb-chunk-begin -->
 <!-- rnb-chunk-end -->
 </div>
+</div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkNsZWFuIFBhdGllbnQgVGFibGUiDQpkYXRlOiAiYHIgU3lzLkRhdGUoKWAiDQpvdXRwdXQ6IA0KICBodG1sX25vdGVib29rOg0KICAgIHRvYzogdHJ1ZQ0KICBodG1sX2RvY3VtZW50Og0KICAgIHRvYzogdHJ1ZQ0KICAgIHRvY19mbG9hdDogdHJ1ZQ0KICAgIGNvZGVfZm9sZGluZzogc2hvdw0KICAgICMgY3NzOiBjdXN0b20tY3NzLmNzcw0KICB3b3JkX2RvY3VtZW50Og0KICAgIHJlZmVyZW5jZV9kb2N4OiB3b3JkX3N0eWxlX3RlbXBsYXRlXzAxLmRvY3gNCi0tLQ0KDQpgYGB7ciBsb2FkX3BhY2thZ2VzLCBtZXNzYWdlPUZBTFNFfQ0KIyBMb2FkIHBhY2thZ2VzDQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmBgYA0KDQoNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCg0KJm5ic3A7DQoNCiMjIyMgU2Vzc2lvbiBJbmZvOg0KYGBge3Igc2Vzc2lvbl9pbmZvLCBlY2hvPUZBTFNFfQ0Kc2Vzc2lvbkluZm8oKQ0KYGBgDQo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ2xlYW4gUGF0aWVudCBUYWJsZSIKZGF0ZTogImByIFN5cy5EYXRlKClgIgpvdXRwdXQ6IAogIGh0bWxfbm90ZWJvb2s6CiAgICB0b2M6IHRydWUKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwogICAgIyBjc3M6IGN1c3RvbS1jc3MuY3NzCiAgd29yZF9kb2N1bWVudDoKICAgIHJlZmVyZW5jZV9kb2N4OiB3b3JkX3N0eWxlX3RlbXBsYXRlXzAxLmRvY3gKLS0tCgpgYGB7ciBsb2FkX3BhY2thZ2VzLCBtZXNzYWdlPUZBTFNFfQojIExvYWQgcGFja2FnZXMKbGlicmFyeSh0aWR5dmVyc2UpCmBgYAoKIyBMb2FkIHBhdGllbnQgdGFibGUKCmBgYHtyfQpwYXRpZW50IDwtIHJlYWRfcmRzKHBhdGggPSAiLi4vZGF0YS9QYXRpZW50LlJEYXRhIikKYGBgCgoKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KCiZuYnNwOwoKIyMjIyBTZXNzaW9uIEluZm86CmBgYHtyIHNlc3Npb25faW5mbywgZWNobz1GQUxTRX0Kc2Vzc2lvbkluZm8oKQpgYGAK</div>
 
 
 
