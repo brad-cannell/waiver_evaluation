@@ -174,19 +174,29 @@ $(document).ready(function () {
 
 <div id="TOC">
 <ul>
+<li><a href="#load-packages">Load packages</a></li>
 <li><a href="#load-patient-table">Load patient table</a></li>
+<li><a href="#coerce-variable-types">Coerce variable types</a></li>
+<li><a href="#merge-with-lookup-tables">Merge with lookup tables</a></li>
+<li><a href="#codebook">Codebook</a></li>
 </ul>
 </div>
 
 <!-- rnb-text-begin -->
+<div id="load-packages" class="section level1">
+<h1>Load packages</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIHBhY2thZ2VzXG5saWJyYXJ5KHRpZHl2ZXJzZSlcbmBgYCJ9 -->
-<pre class="r"><code># Load packages
-library(tidyverse)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDcmFuXG5saWJyYXJ5KHRpZHl2ZXJzZSlcbiMgR2l0SHViXG4jIGRldnRvb2xzOjppbnN0YWxsX2dpdGh1YihcIm1iY2FubjAxL2RhdGFjbGVhblwiKVxubGlicmFyeShkYXRhY2xlYW4pXG5gYGAifQ== -->
+<pre class="r"><code># Cran
+library(tidyverse)
+# GitHub
+# devtools::install_github(&quot;mbcann01/dataclean&quot;)
+library(dataclean)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+</div>
 <div id="load-patient-table" class="section level1">
 <h1>Load patient table</h1>
 <!-- rnb-text-end -->
@@ -196,17 +206,525 @@ library(tidyverse)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+</div>
+<div id="coerce-variable-types" class="section level1">
+<h1>Coerce variable types</h1>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGF0aWVudCA8LSBwYXRpZW50ICU+JSBcbiAgbXV0YXRlKFxuICAgIENyZWF0ZWQgICAgICAgICAgICAgICAgICAgICAgICAgICAgPSBhcy5QT1NJWGN0KENyZWF0ZWQpLFxuICAgIERhdGVPZkJpcnRoICAgICAgICAgICAgICAgICAgICAgICAgPSBhcy5EYXRlKERhdGVPZkJpcnRoKSxcbiAgICBVbmFibGVUb1JlYWNoT24gICAgICAgICAgICAgICAgICAgID0gYXMuUE9TSVhjdChVbmFibGVUb1JlYWNoT24pLFxuICAgIExhc3RQaGFzZVJldmlldyAgICAgICAgICAgICAgICAgICAgPSBhcy5QT1NJWGN0KExhc3RQaGFzZVJldmlldyksXG4gICAgTGFzdEVSSG9zcGl0YWxpemF0aW9uRGlzY2hhcmdlRGF0ZSA9IGFzLlBPU0lYY3QoTGFzdEVSSG9zcGl0YWxpemF0aW9uRGlzY2hhcmdlRGF0ZSksXG4gICAgTGFzdEhvc3BpdGFsaXphdGlvbkFkbWlzc2lvbkRhdGUgICA9IGFzLlBPU0lYY3QoTGFzdEhvc3BpdGFsaXphdGlvbkFkbWlzc2lvbkRhdGUpXG4gIClcbmBgYCJ9 -->
+<pre class="r"><code>patient &lt;- patient %&gt;% 
+  mutate(
+    Created                            = as.POSIXct(Created),
+    DateOfBirth                        = as.Date(DateOfBirth),
+    UnableToReachOn                    = as.POSIXct(UnableToReachOn),
+    LastPhaseReview                    = as.POSIXct(LastPhaseReview),
+    LastERHospitalizationDischargeDate = as.POSIXct(LastERHospitalizationDischargeDate),
+    LastHospitalizationAdmissionDate   = as.POSIXct(LastHospitalizationAdmissionDate)
+  )</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="merge-with-lookup-tables" class="section level1">
+<h1>Merge with lookup tables</h1>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBOZWVkIHRvIGltcG9ydCB0aGVzZSBvbiBQQ1xuYGBgIn0= -->
+<pre class="r"><code># Need to import these on PC</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="codebook" class="section level1">
+<h1>Codebook</h1>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGFiZWxzIDwtIGMoXG4gIFwiUGF0aWVudCBJZFwiLFxuICBcIlwiLFxuICBcIk5hbWUgb2Ygc3RhZmYgdGhhdCBjcmVhdGVkIHBhdGllbnQgcmVjb3JkIGVudHJ5XCIsXG4gIFwiRGF0ZSBwYXRpZW50IHJlY29yZCBlbnRyeSB3YXMgY3JlYXRlZFwiLFxuICBcIlwiLFxuICBcIlwiLFxuICBcIlBhdGllbnQgZGF0ZSBvZiBiaXJ0aFwiLFxuICBcIlBhdGllbnQgZ2VuZGVyXCIsXG4gIFwiUGF0aWVudCBjaXR5XCIsXG4gIFwiUGF0aWVudCBzdGF0ZVwiLFxuICBcIlBhdGllbnQgemlwIGNvZGVcIixcbiAgXCJcIixcbiAgXCJQYXRpZW50IG1hcml0YWwgc3RhdHVzXCIsXG4gIFwiUGF0aWVudCByYWNlXCIsXG4gIFwiXCIsXG4gIFwiXCIsXG4gIFwiXCIsXG4gIFwiXCIsXG4gIFwiXCIsXG4gIFwiXCIsXG4gIFwiXCIsXG4gIFwiXCIsXG4gIFwiXCIsXG4gIFwiXCIsXG4gIFwiXCIsXG4gIFwiXCIsXG4gIFwiXCIsXG4gIFwiXCIsXG4gIFwiXCIsXG4gIFwiXCIsXG4gIFwiXCIsXG4gIFwiXCJcbilcbmNvZGVib29rKHBhdGllbnQsIGxhYmVsID0gbGFiZWxzKVxuYGBgIn0= -->
+<pre class="r"><code>labels &lt;- c(
+  &quot;Patient Id&quot;,
+  &quot;&quot;,
+  &quot;Name of staff that created patient record entry&quot;,
+  &quot;Date patient record entry was created&quot;,
+  &quot;&quot;,
+  &quot;&quot;,
+  &quot;Patient date of birth&quot;,
+  &quot;Patient gender&quot;,
+  &quot;Patient city&quot;,
+  &quot;Patient state&quot;,
+  &quot;Patient zip code&quot;,
+  &quot;&quot;,
+  &quot;Patient marital status&quot;,
+  &quot;Patient race&quot;,
+  &quot;&quot;,
+  &quot;&quot;,
+  &quot;&quot;,
+  &quot;&quot;,
+  &quot;&quot;,
+  &quot;&quot;,
+  &quot;&quot;,
+  &quot;&quot;,
+  &quot;&quot;,
+  &quot;&quot;,
+  &quot;&quot;,
+  &quot;&quot;,
+  &quot;&quot;,
+  &quot;&quot;,
+  &quot;&quot;,
+  &quot;&quot;,
+  &quot;&quot;,
+  &quot;&quot;
+)
+codebook(patient, label = labels)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXG5JZCBcbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuTGFiZWw6IFBhdGllbnQgSWQgXG5DbGFzczogaW50ZWdlciBcblVuaXF1ZTogNjIyIFxuTWlzczogMCBcblN1bW1hcnk6IFxuICAgTWluLiAxc3QgUXUuICBNZWRpYW4gICAgTWVhbiAzcmQgUXUuICAgIE1heC4gXG4gICAzNDUwICAgIDgwMDggICAgOTg3NiAgIDEwMDYwICAgMTE5NTAgICAxNDIwMCBcblxuXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcblNvdXJjZUFnZW5jeUVNUklkIFxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXG5MYWJlbDogIFxuQ2xhc3M6IGludGVnZXIgXG5VbmlxdWU6IDEgXG5NaXNzOiAwIFxuU3VtbWFyeTogXG4gICBNaW4uIDFzdCBRdS4gIE1lZGlhbiAgICBNZWFuIDNyZCBRdS4gICAgTWF4LiBcbiAgICAgIDIgICAgICAgMiAgICAgICAyICAgICAgIDIgICAgICAgMiAgICAgICAyIFxuXG5cbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuQ3JlYXRlZEJ5SWQgXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkxhYmVsOiBOYW1lIG9mIHN0YWZmIHRoYXQgY3JlYXRlZCBwYXRpZW50IHJlY29yZCBlbnRyeSBcbkNsYXNzOiBpbnRlZ2VyIFxuVW5pcXVlOiAxIFxuTWlzczogMCBcblN1bW1hcnk6IFxuICAgTWluLiAxc3QgUXUuICBNZWRpYW4gICAgTWVhbiAzcmQgUXUuICAgIE1heC4gXG4gICAgIDM3ICAgICAgMzcgICAgICAzNyAgICAgIDM3ICAgICAgMzcgICAgICAzNyBcblxuXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkNyZWF0ZWQgXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkxhYmVsOiBEYXRlIHBhdGllbnQgcmVjb3JkIGVudHJ5IHdhcyBjcmVhdGVkIFxuQ2xhc3M6IFBPU0lYY3QgUE9TSVh0IFxuVW5pcXVlOiA1MjkgXG5NaXNzOiAwIFxuU3VtbWFyeTogXG4gICAgICAgICAgICAgICAgIE1pbi4gICAgICAgICAgICAgICAxc3QgUXUuICAgICAgICAgICAgICAgIE1lZGlhbiAgICAgICAgICAgICAgICAgIE1lYW4gICAgICAgICAgICAgICAzcmQgUXUuIFxuXCIyMDE0LTA3LTIyIDAxOjIxOjU5XCIgXCIyMDE1LTA3LTA2IDExOjIwOjAxXCIgXCIyMDE1LTExLTI0IDIzOjAwOjAyXCIgXCIyMDE1LTEyLTA0IDIzOjE4OjMxXCIgXCIyMDE2LTA0LTIwIDE2OjM4OjI1XCIgXG4gICAgICAgICAgICAgICAgIE1heC4gXG5cIjIwMTYtMTEtMTQgMTM6MjQ6NDdcIiBcblxuXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkxhc3RNb2RpZmllZEJ5SWQgXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkxhYmVsOiAgXG5DbGFzczogaW50ZWdlciBcblVuaXF1ZTogMSBcbk1pc3M6IDAgXG5TdW1tYXJ5OiBcbiAgIE1pbi4gMXN0IFF1LiAgTWVkaWFuICAgIE1lYW4gM3JkIFF1LiAgICBNYXguIFxuICAgICAzNyAgICAgIDM3ICAgICAgMzcgICAgICAzNyAgICAgIDM3ICAgICAgMzcgXG5cblxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXG5Jc0NvbXBsZXRlIFxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXG5MYWJlbDogIFxuQ2xhc3M6IGludGVnZXIgXG5VbmlxdWU6IDEgXG5NaXNzOiAwIFxuU3VtbWFyeTogXG4gICBNaW4uIDFzdCBRdS4gIE1lZGlhbiAgICBNZWFuIDNyZCBRdS4gICAgTWF4LiBcbiAgICAgIDAgICAgICAgMCAgICAgICAwICAgICAgIDAgICAgICAgMCAgICAgICAwIFxuXG5cbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuRGF0ZU9mQmlydGggXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkxhYmVsOiBQYXRpZW50IGRhdGUgb2YgYmlydGggXG5DbGFzczogRGF0ZSBcblVuaXF1ZTogNjA1IFxuTWlzczogMCBcblN1bW1hcnk6IFxuICAgICAgICBNaW4uICAgICAgMXN0IFF1LiAgICAgICBNZWRpYW4gICAgICAgICBNZWFuICAgICAgM3JkIFF1LiAgICAgICAgIE1heC4gXG5cIjE5MjUtMDgtMTNcIiBcIjE5NTQtMDEtMTNcIiBcIjE5NTktMDMtMTFcIiBcIjE5NjAtMDgtMDhcIiBcIjE5NjUtMTItMjZcIiBcIjE5OTctMTItMTZcIiBcblxuXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkdlbmRlciBcbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuTGFiZWw6IFBhdGllbnQgZ2VuZGVyIFxuQ2xhc3M6IGZhY3RvciBcblVuaXF1ZTogMyBcbk1pc3M6IDAgXG5TdW1tYXJ5OiBcbiAgRiAgIE0gICBVIFxuNDA4IDIxMCAgIDQgXG5cblxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXG5DaXR5IFxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXG5MYWJlbDogUGF0aWVudCBjaXR5IFxuQ2xhc3M6IGZhY3RvciBcblVuaXF1ZTogNDYgXG5NaXNzOiAwIFxuU3VtbWFyeTogXG4gICAgICAgICAgICAgQWRkaXNvbiAgICAgICAgICAgICBBTFZBUkFETyAgICAgICAgICAgIEFybGluZ3RvbiAgICAgICAgICAgIEFSTElOR1RPTiAgICAgICAgICAgICAgICAgQXpsZSBcbiAgICAgICAgICAgICAgICAgICAxICAgICAgICAgICAgICAgICAgIDExICAgICAgICAgICAgICAgICAgIDE4ICAgICAgICAgICAgICAgICAgIDMxICAgICAgICAgICAgICAgICAgICA4IFxuICAgICAgICAgICAgIEJlZGZvcmQgICAgICAgICAgICAgQlVSTEVTT04gICAgICAgICAgIENFREFSIEhJTEwgICAgICAgICAgICAgQ2xlYnVybmUgICAgICAgICAgQ29sbGV5dmlsbGUgXG4gICAgICAgICAgICAgICAgICAgNCAgICAgICAgICAgICAgICAgICAxNiAgICAgICAgICAgICAgICAgICAgMSAgICAgICAgICAgICAgICAgICAxMyAgICAgICAgICAgICAgICAgICAgMSBcbiAgICAgICAgICAgICBDUk9XTEVZICAgICAgICAgICAgICAgRGFsbGFzICAgICAgICAgICAgICAgRVVMRVNTICAgICAgICAgIEZvcmVzdCBIaWxsICAgICAgICAgICBGb3J0IFdvcnRoIFxuICAgICAgICAgICAgICAgICAgIDggICAgICAgICAgICAgICAgICAgIDEgICAgICAgICAgICAgICAgICAgIDcgICAgICAgICAgICAgICAgICAgMTIgICAgICAgICAgICAgICAgICAyMzQgXG4gICAgICAgICAgRk9SVCBXT1JUSCAgICAgICAgICAgICBGVCBXT1JUSCAgICAgICAgICAgIEZ0LiBXb3J0aCAgICAgICAgICAgIEZULiBXT1JUSCAgICAgICAgICAgICBHcmFuYnVyeSBcbiAgICAgICAgICAgICAgICAgMTY1ICAgICAgICAgICAgICAgICAgICA4ICAgICAgICAgICAgICAgICAgICA4ICAgICAgICAgICAgICAgICAgICA1ICAgICAgICAgICAgICAgICAgICAyIFxuICAgICAgICAgICAgR1JBTkJVUlkgICAgICAgIEdyYW5kIFByYWlyaWUgICAgICAgIEdSQU5EIFBSQUlSSUUgICAgICAgICAgICBHcmFuZHZpZXcgICAgICAgICAgICBHcmFwZXZpbmUgXG4gICAgICAgICAgICAgICAgICAgMyAgICAgICAgICAgICAgICAgICAgMSAgICAgICAgICAgICAgICAgICAxMCAgICAgICAgICAgICAgICAgICAgMSAgICAgICAgICAgICAgICAgICAgMSBcbiAgICAgICAgIEhhbHRvbSBDaXR5ICAgICAgICAgICAgICAgIEhVUlNUICAgICAgICAgICAgICAgSm9zaHVhICAgICAgICAgICAgS2VubmVkYWxlICAgICAgICAgICAgTUFOU0ZJRUxEIFxuICAgICAgICAgICAgICAgICAgIDggICAgICAgICAgICAgICAgICAgIDQgICAgICAgICAgICAgICAgICAgIDMgICAgICAgICAgICAgICAgICAgIDEgICAgICAgICAgICAgICAgICAgIDMgXG4gICAgICAgICAgICBNY0tpbm5leSAgICAgICAgICAgTUlETE9USElBTiAgICAgICAgTWluZXJhbCBXZWxscyAgICAgICAgICAgICAgIE5ld2FyayBOb3J0aCBSaWNobGFuZCBIaWxscyBcbiAgICAgICAgICAgICAgICAgICAxICAgICAgICAgICAgICAgICAgICAxICAgICAgICAgICAgICAgICAgICAyICAgICAgICAgICAgICAgICAgICAyICAgICAgICAgICAgICAgICAgICA0IFxuICAgICAgIFJJQ0hMQU5EIEhJTEwgICAgICAgICAgICBSaW8gVmlzdGEgICAgICAgICAgICAgIFNhZ2luYXcgICAgICAgICAgIFNwcmluZ3Rvd24gICAgICAgICAgIFNQUklOR1RPV04gXG4gICAgICAgICAgICAgICAgICAgMSAgICAgICAgICAgICAgICAgICAgMSAgICAgICAgICAgICAgICAgICAgMSAgICAgICAgICAgICAgICAgICAgMiAgICAgICAgICAgICAgICAgICAgMSBcbiAgICAgICAgICAgICAgIFRvbGFyICAgICAgICAgIFRyb3BoeSBDbHViICAgICAgICAgIFdlYXRoZXJmb3JkICAgIFdlc3R3b3J0aCBWaWxsYWdlICAgV2VzdHdvcnRoIFZpbGxhZ2UgIFxuICAgICAgICAgICAgICAgICAgIDEgICAgICAgICAgICAgICAgICAgIDEgICAgICAgICAgICAgICAgICAgIDUgICAgICAgICAgICAgICAgICAgIDQgICAgICAgICAgICAgICAgICAgIDMgXG4gICAgV2hpdGUgU2V0dGxlbWVudCBcbiAgICAgICAgICAgICAgICAgICAzIFxuXG5cbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuU3RhdGUgXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkxhYmVsOiBQYXRpZW50IHN0YXRlIFxuQ2xhc3M6IGZhY3RvciBcblVuaXF1ZTogMSBcbk1pc3M6IDAgXG5TdW1tYXJ5OiBcbiBUWCBcbjYyMiBcblxuXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcblppcCBcbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuTGFiZWw6IFBhdGllbnQgemlwIGNvZGUgXG5DbGFzczogaW50ZWdlciBcblVuaXF1ZTogODMgXG5NaXNzOiAwIFxuU3VtbWFyeTogXG4gICBNaW4uIDFzdCBRdS4gIE1lZGlhbiAgICBNZWFuIDNyZCBRdS4gICAgTWF4LiBcbiAgNzUwMDAgICA3NjA4MCAgIDc2MTEwICAgNzYwNzAgICA3NjEyMCAgIDc2NDgwIFxuXG5cbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuT3RoZXJMYW5ndWFnZSBcbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuTGFiZWw6ICBcbkNsYXNzOiBmYWN0b3IgXG5VbmlxdWU6IDQgXG5NaXNzOiA2MTggXG5TdW1tYXJ5OiBcbiAgQmVyZ3Vlc2UgICAgdW5rbm93biBWaWV0bWluZXNlICAgICAgIE5BJ3MgXG4gICAgICAgICAxICAgICAgICAgIDIgICAgICAgICAgMSAgICAgICAgNjE4IFxuXG5cbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuTWFyaXRhbFN0YXR1cyBcbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuTGFiZWw6IFBhdGllbnQgbWFyaXRhbCBzdGF0dXMgXG5DbGFzczogZmFjdG9yIFxuVW5pcXVlOiA3IFxuTWlzczogMCBcblN1bW1hcnk6IFxuICAgIERpdm9yY2VkIExpZmUgUGFydG5lciAgICAgIE1hcnJpZWQgICAgU2VwYXJhdGVkICAgICAgIFNpbmdsZSAgICAgIFVua25vd24gICAgICBXaWRvd2VkIFxuICAgICAgICAgMTIxICAgICAgICAgICAgNCAgICAgICAgICAxMjIgICAgICAgICAgIDMwICAgICAgICAgIDIzMiAgICAgICAgICAgNjEgICAgICAgICAgIDUyIFxuXG5cbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuUmFjZSBcbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuTGFiZWw6IFBhdGllbnQgcmFjZSBcbkNsYXNzOiBmYWN0b3IgXG5VbmlxdWU6IDkgXG5NaXNzOiAwIFxuU3VtbWFyeTogXG5BZnJpY2FuIEFtZXJpY2FuICAgICAgICAgICAgQXNpYW4gICAgICAgIENhdWNhc2lhbiAgICAgICAgIEhpc3BhbmljICBOYXRpdmUgQW1lcmljYW4gIE5hdGl2ZSBIYXdhaWlhbiBcbiAgICAgICAgICAgICAyNTcgICAgICAgICAgICAgICAxMSAgICAgICAgICAgICAgMjQ2ICAgICAgICAgICAgICAgODIgICAgICAgICAgICAgICAgMiAgICAgICAgICAgICAgICAxIFxuICAgICAgICAgICBPdGhlciBQYWNpZmljIElzbGFuZGVyICAgICAgICAgIFVua25vd24gXG4gICAgICAgICAgICAgICAyICAgICAgICAgICAgICAgIDEgICAgICAgICAgICAgICAyMCBcblxuXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcblByaW1hcnlMYW5ndWFnZSBcbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuTGFiZWw6ICBcbkNsYXNzOiBmYWN0b3IgXG5VbmlxdWU6IDMgXG5NaXNzOiAwIFxuU3VtbWFyeTogXG4gQXJhYmljIEVuZ2xpc2ggU3BhbmlzaCBcbiAgICAgIDIgICAgIDYxNCAgICAgICA2IFxuXG5cbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuU3RhdHVzSWQgXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkxhYmVsOiAgXG5DbGFzczogaW50ZWdlciBcblVuaXF1ZTogMiBcbk1pc3M6IDAgXG5TdW1tYXJ5OiBcbiAgIE1pbi4gMXN0IFF1LiAgTWVkaWFuICAgIE1lYW4gM3JkIFF1LiAgICBNYXguIFxuICAgMS4wMCAgICAxLjAwICAgIDEuMDAgICAgMS4wMSAgICAxLjAwICAgIDMuMDAgXG5cblxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXG5QaGFzZSBcbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuTGFiZWw6ICBcbkNsYXNzOiBpbnRlZ2VyIFxuVW5pcXVlOiAxIFxuTWlzczogMCBcblN1bW1hcnk6IFxuICAgTWluLiAxc3QgUXUuICBNZWRpYW4gICAgTWVhbiAzcmQgUXUuICAgIE1heC4gXG4gICAgICAxICAgICAgIDEgICAgICAgMSAgICAgICAxICAgICAgIDEgICAgICAgMSBcblxuXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkxhc3RQYXJhbWV0ZXJDaGFuZ2VEYXRlIFxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXG5MYWJlbDogIFxuQ2xhc3M6IGxvZ2ljYWwgXG5VbmlxdWU6IDEgXG5NaXNzOiA2MjIgXG5TdW1tYXJ5OiBcbiAgIE1vZGUgICAgTkEncyBcbmxvZ2ljYWwgICAgIDYyMiBcblxuXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcblRyYWNrZXJVcmdlbnQgXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkxhYmVsOiAgXG5DbGFzczogaW50ZWdlciBcblVuaXF1ZTogMyBcbk1pc3M6IDUyIFxuU3VtbWFyeTogXG4gICBNaW4uIDFzdCBRdS4gIE1lZGlhbiAgICBNZWFuIDNyZCBRdS4gICAgTWF4LiAgICBOQSdzIFxuIDAuMDAwMCAgMC4wMDAwICAwLjAwMDAgIDAuMDM4NiAgMC4wMDAwICAxLjAwMDAgICAgICA1MiBcblxuXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkNIRldhcm5pbmcgXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkxhYmVsOiAgXG5DbGFzczogbG9naWNhbCBcblVuaXF1ZTogMSBcbk1pc3M6IDYyMiBcblN1bW1hcnk6IFxuICAgTW9kZSAgICBOQSdzIFxubG9naWNhbCAgICAgNjIyIFxuXG5cbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuVW5hYmxlVG9SZWFjaE9uIFxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXG5MYWJlbDogIFxuQ2xhc3M6IFBPU0lYY3QgUE9TSVh0IFxuVW5pcXVlOiA0NiBcbk1pc3M6IDU3NyBcblN1bW1hcnk6IFxuICAgICAgICAgICAgICAgICBNaW4uICAgICAgICAgICAgICAgMXN0IFF1LiAgICAgICAgICAgICAgICBNZWRpYW4gICAgICAgICAgICAgICAgICBNZWFuICAgICAgICAgICAgICAgM3JkIFF1LiBcblwiMjAxNS0wNS0xOSAxNjo0MjozOVwiIFwiMjAxNS0xMC0zMCAwOToyNTowMlwiIFwiMjAxNi0xMS0xNSAwNzoxNjo0OVwiIFwiMjAxNi0wNS0zMSAxMDowOTo0M1wiIFwiMjAxNi0xMS0xNSAxMDowODo0OVwiIFxuICAgICAgICAgICAgICAgICBNYXguICAgICAgICAgICAgICAgICAgTkEncyBcblwiMjAxNi0xMS0xNSAxMzozOTo0N1wiICAgICAgICAgICAgICAgICBcIjU3N1wiIFxuXG5cbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuRnJvbUludGFrZVBvcnRhbCBcbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuTGFiZWw6ICBcbkNsYXNzOiBsb2dpY2FsIFxuVW5pcXVlOiAxIFxuTWlzczogNjIyIFxuU3VtbWFyeTogXG4gICBNb2RlICAgIE5BJ3MgXG5sb2dpY2FsICAgICA2MjIgXG5cblxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXG5Fc2wgXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkxhYmVsOiAgXG5DbGFzczogaW50ZWdlciBcblVuaXF1ZTogMyBcbk1pc3M6IDYwMSBcblN1bW1hcnk6IFxuICAgTWluLiAxc3QgUXUuICBNZWRpYW4gICAgTWVhbiAzcmQgUXUuICAgIE1heC4gICAgTkEncyBcbiAwLjAwMDAgIDEuMDAwMCAgMS4wMDAwICAwLjk1MjQgIDEuMDAwMCAgMS4wMDAwICAgICA2MDEgXG5cblxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXG5QYXJlbnRQYXRpZW50SWQgXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkxhYmVsOiAgXG5DbGFzczogaW50ZWdlciBcblVuaXF1ZTogMSBcbk1pc3M6IDYyMiBcblN1bW1hcnk6IFxuICAgTWluLiAxc3QgUXUuICBNZWRpYW4gICAgTWVhbiAzcmQgUXUuICAgIE1heC4gICAgTkEncyBcbiAgICAgTkEgICAgICBOQSAgICAgIE5BICAgICBOYU4gICAgICBOQSAgICAgIE5BICAgICA2MjIgXG5cblxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXG5Db250YWluc0xpYWJpbGl0eVN5bXB0b20gXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkxhYmVsOiAgXG5DbGFzczogaW50ZWdlciBcblVuaXF1ZTogMiBcbk1pc3M6IDEyMSBcblN1bW1hcnk6IFxuICAgTWluLiAxc3QgUXUuICBNZWRpYW4gICAgTWVhbiAzcmQgUXUuICAgIE1heC4gICAgTkEncyBcbiAgICAgIDAgICAgICAgMCAgICAgICAwICAgICAgIDAgICAgICAgMCAgICAgICAwICAgICAxMjEgXG5cblxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXG5QaGFzZUNoYW5nZSBcbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuTGFiZWw6ICBcbkNsYXNzOiBpbnRlZ2VyIFxuVW5pcXVlOiAyIFxuTWlzczogMCBcblN1bW1hcnk6IFxuICAgIE1pbi4gIDFzdCBRdS4gICBNZWRpYW4gICAgIE1lYW4gIDNyZCBRdS4gICAgIE1heC4gXG4wLjAwMDAwMCAwLjAwMDAwMCAwLjAwMDAwMCAwLjAwMTYwOCAwLjAwMDAwMCAxLjAwMDAwMCBcblxuXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkxhc3RQaGFzZVJldmlldyBcbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuTGFiZWw6ICBcbkNsYXNzOiBQT1NJWGN0IFBPU0lYdCBcblVuaXF1ZTogMTc4IFxuTWlzczogNDQ1IFxuU3VtbWFyeTogXG4gICAgICAgICAgICAgICAgIE1pbi4gICAgICAgICAgICAgICAxc3QgUXUuICAgICAgICAgICAgICAgIE1lZGlhbiAgICAgICAgICAgICAgICAgIE1lYW4gICAgICAgICAgICAgICAzcmQgUXUuIFxuXCIyMDE2LTAxLTI4IDA4OjQ3OjA5XCIgXCIyMDE2LTA0LTI1IDExOjM2OjQxXCIgXCIyMDE2LTA2LTI4IDExOjAyOjU5XCIgXCIyMDE2LTA3LTA2IDEwOjEyOjE0XCIgXCIyMDE2LTA5LTE0IDE1OjE0OjEzXCIgXG4gICAgICAgICAgICAgICAgIE1heC4gICAgICAgICAgICAgICAgICBOQSdzIFxuXCIyMDE2LTExLTE1IDEwOjA3OjMwXCIgICAgICAgICAgICAgICAgIFwiNDQ1XCIgXG5cblxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXG5MYXN0RVJIb3NwaXRhbGl6YXRpb25EaXNjaGFyZ2VEYXRlIFxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXG5MYWJlbDogIFxuQ2xhc3M6IFBPU0lYY3QgUE9TSVh0IFxuVW5pcXVlOiAxOTMgXG5NaXNzOiA0MDAgXG5TdW1tYXJ5OiBcbiAgICAgICAgICAgICAgICAgTWluLiAgICAgICAgICAgICAgIDFzdCBRdS4gICAgICAgICAgICAgICAgTWVkaWFuICAgICAgICAgICAgICAgICAgTWVhbiAgICAgICAgICAgICAgIDNyZCBRdS4gXG5cIjIwMTUtMDMtMTkgMDA6MDA6MDBcIiBcIjIwMTUtMTAtMDMgMDA6MDA6MDBcIiBcIjIwMTYtMDItMTcgMDA6MDA6MDBcIiBcIjIwMTYtMDItMDcgMTY6NDY6MTJcIiBcIjIwMTYtMDYtMjEgMTI6MDA6MDBcIiBcbiAgICAgICAgICAgICAgICAgTWF4LiAgICAgICAgICAgICAgICAgIE5BJ3MgXG5cIjIwMTYtMTEtMTIgMDA6MDA6MDBcIiAgICAgICAgICAgICAgICAgXCI0MDBcIiBcblxuXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkxhc3RIb3NwaXRhbGl6YXRpb25BZG1pc3Npb25EYXRlIFxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXG5MYWJlbDogIFxuQ2xhc3M6IFBPU0lYY3QgUE9TSVh0IFxuVW5pcXVlOiAyMjIgXG5NaXNzOiAzMzkgXG5TdW1tYXJ5OiBcbiAgICAgICAgICAgICAgICAgTWluLiAgICAgICAgICAgICAgIDFzdCBRdS4gICAgICAgICAgICAgICAgTWVkaWFuICAgICAgICAgICAgICAgICAgTWVhbiAgICAgICAgICAgICAgIDNyZCBRdS4gXG5cIjIwMTUtMDMtMDEgMDA6MDA6MDBcIiBcIjIwMTUtMTAtMTIgMTI6MDA6MDBcIiBcIjIwMTYtMDItMTkgMDA6MDA6MDBcIiBcIjIwMTYtMDItMTUgMDY6NDU6MzRcIiBcIjIwMTYtMDctMDEgMTI6MDA6MDBcIiBcbiAgICAgICAgICAgICAgICAgTWF4LiAgICAgICAgICAgICAgICAgIE5BJ3MgXG5cIjIwMTYtMTEtMTUgMDA6MDA6MDBcIiAgICAgICAgICAgICAgICAgXCIzMzlcIiBcblxuXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbk5lZWRzQW54aWV0eUdBRDcgXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkxhYmVsOiAgXG5DbGFzczogaW50ZWdlciBcblVuaXF1ZTogMiBcbk1pc3M6IDYyMSBcblN1bW1hcnk6IFxuICAgTWluLiAxc3QgUXUuICBNZWRpYW4gICAgTWVhbiAzcmQgUXUuICAgIE1heC4gICAgTkEncyBcbiAgICAgIDAgICAgICAgMCAgICAgICAwICAgICAgIDAgICAgICAgMCAgICAgICAwICAgICA2MjEgXG5cblxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXG5OZWVkc0RlcHJlc3Npb25QSFEyIFxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gXG5MYWJlbDogIFxuQ2xhc3M6IGludGVnZXIgXG5VbmlxdWU6IDIgXG5NaXNzOiA2MjEgXG5TdW1tYXJ5OiBcbiAgIE1pbi4gMXN0IFF1LiAgTWVkaWFuICAgIE1lYW4gM3JkIFF1LiAgICBNYXguICAgIE5BJ3MgXG4gICAgICAwICAgICAgIDAgICAgICAgMCAgICAgICAwICAgICAgIDAgICAgICAgMCAgICAgNjIxIFxuXG5cbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFxuUmVmZXJyYWxQYXRpZW50SWQgXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBcbkxhYmVsOiAgXG5DbGFzczogaW50ZWdlciBcblVuaXF1ZTogMSBcbk1pc3M6IDYyMiBcblN1bW1hcnk6IFxuICAgTWluLiAxc3QgUXUuICBNZWRpYW4gICAgTWVhbiAzcmQgUXUuICAgIE1heC4gICAgTkEncyBcbiAgICAgTkEgICAgICBOQSAgICAgIE5BICAgICBOYU4gICAgICBOQSAgICAgIE5BICAgICA2MjIgXG4ifQ== -->
+<pre><code>-------------------------------------------------------------------------------------------------------------- 
+Id 
+-------------------------------------------------------------------------------------------------------------- 
+Label: Patient Id 
+Class: integer 
+Unique: 622 
+Miss: 0 
+Summary: 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   3450    8008    9876   10060   11950   14200 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+SourceAgencyEMRId 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: integer 
+Unique: 1 
+Miss: 0 
+Summary: 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+      2       2       2       2       2       2 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+CreatedById 
+-------------------------------------------------------------------------------------------------------------- 
+Label: Name of staff that created patient record entry 
+Class: integer 
+Unique: 1 
+Miss: 0 
+Summary: 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+     37      37      37      37      37      37 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+Created 
+-------------------------------------------------------------------------------------------------------------- 
+Label: Date patient record entry was created 
+Class: POSIXct POSIXt 
+Unique: 529 
+Miss: 0 
+Summary: 
+                 Min.               1st Qu.                Median                  Mean               3rd Qu. 
+&quot;2014-07-22 01:21:59&quot; &quot;2015-07-06 11:20:01&quot; &quot;2015-11-24 23:00:02&quot; &quot;2015-12-04 23:18:31&quot; &quot;2016-04-20 16:38:25&quot; 
+                 Max. 
+&quot;2016-11-14 13:24:47&quot; 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+LastModifiedById 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: integer 
+Unique: 1 
+Miss: 0 
+Summary: 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+     37      37      37      37      37      37 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+IsComplete 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: integer 
+Unique: 1 
+Miss: 0 
+Summary: 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+      0       0       0       0       0       0 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+DateOfBirth 
+-------------------------------------------------------------------------------------------------------------- 
+Label: Patient date of birth 
+Class: Date 
+Unique: 605 
+Miss: 0 
+Summary: 
+        Min.      1st Qu.       Median         Mean      3rd Qu.         Max. 
+&quot;1925-08-13&quot; &quot;1954-01-13&quot; &quot;1959-03-11&quot; &quot;1960-08-08&quot; &quot;1965-12-26&quot; &quot;1997-12-16&quot; 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+Gender 
+-------------------------------------------------------------------------------------------------------------- 
+Label: Patient gender 
+Class: factor 
+Unique: 3 
+Miss: 0 
+Summary: 
+  F   M   U 
+408 210   4 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+City 
+-------------------------------------------------------------------------------------------------------------- 
+Label: Patient city 
+Class: factor 
+Unique: 46 
+Miss: 0 
+Summary: 
+             Addison             ALVARADO            Arlington            ARLINGTON                 Azle 
+                   1                   11                   18                   31                    8 
+             Bedford             BURLESON           CEDAR HILL             Cleburne          Colleyville 
+                   4                   16                    1                   13                    1 
+             CROWLEY               Dallas               EULESS          Forest Hill           Fort Worth 
+                   8                    1                    7                   12                  234 
+          FORT WORTH             FT WORTH            Ft. Worth            FT. WORTH             Granbury 
+                 165                    8                    8                    5                    2 
+            GRANBURY        Grand Prairie        GRAND PRAIRIE            Grandview            Grapevine 
+                   3                    1                   10                    1                    1 
+         Haltom City                HURST               Joshua            Kennedale            MANSFIELD 
+                   8                    4                    3                    1                    3 
+            McKinney           MIDLOTHIAN        Mineral Wells               Newark North Richland Hills 
+                   1                    1                    2                    2                    4 
+       RICHLAND HILL            Rio Vista              Saginaw           Springtown           SPRINGTOWN 
+                   1                    1                    1                    2                    1 
+               Tolar          Trophy Club          Weatherford    Westworth Village   Westworth Village  
+                   1                    1                    5                    4                    3 
+    White Settlement 
+                   3 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+State 
+-------------------------------------------------------------------------------------------------------------- 
+Label: Patient state 
+Class: factor 
+Unique: 1 
+Miss: 0 
+Summary: 
+ TX 
+622 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+Zip 
+-------------------------------------------------------------------------------------------------------------- 
+Label: Patient zip code 
+Class: integer 
+Unique: 83 
+Miss: 0 
+Summary: 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  75000   76080   76110   76070   76120   76480 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+OtherLanguage 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: factor 
+Unique: 4 
+Miss: 618 
+Summary: 
+  Berguese    unknown Vietminese       NA's 
+         1          2          1        618 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+MaritalStatus 
+-------------------------------------------------------------------------------------------------------------- 
+Label: Patient marital status 
+Class: factor 
+Unique: 7 
+Miss: 0 
+Summary: 
+    Divorced Life Partner      Married    Separated       Single      Unknown      Widowed 
+         121            4          122           30          232           61           52 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+Race 
+-------------------------------------------------------------------------------------------------------------- 
+Label: Patient race 
+Class: factor 
+Unique: 9 
+Miss: 0 
+Summary: 
+African American            Asian        Caucasian         Hispanic  Native American  Native Hawaiian 
+             257               11              246               82                2                1 
+           Other Pacific Islander          Unknown 
+               2                1               20 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+PrimaryLanguage 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: factor 
+Unique: 3 
+Miss: 0 
+Summary: 
+ Arabic English Spanish 
+      2     614       6 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+StatusId 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: integer 
+Unique: 2 
+Miss: 0 
+Summary: 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   1.00    1.00    1.00    1.01    1.00    3.00 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+Phase 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: integer 
+Unique: 1 
+Miss: 0 
+Summary: 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+      1       1       1       1       1       1 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+LastParameterChangeDate 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: logical 
+Unique: 1 
+Miss: 622 
+Summary: 
+   Mode    NA's 
+logical     622 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+TrackerUrgent 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: integer 
+Unique: 3 
+Miss: 52 
+Summary: 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+ 0.0000  0.0000  0.0000  0.0386  0.0000  1.0000      52 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+CHFWarning 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: logical 
+Unique: 1 
+Miss: 622 
+Summary: 
+   Mode    NA's 
+logical     622 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+UnableToReachOn 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: POSIXct POSIXt 
+Unique: 46 
+Miss: 577 
+Summary: 
+                 Min.               1st Qu.                Median                  Mean               3rd Qu. 
+&quot;2015-05-19 16:42:39&quot; &quot;2015-10-30 09:25:02&quot; &quot;2016-11-15 07:16:49&quot; &quot;2016-05-31 10:09:43&quot; &quot;2016-11-15 10:08:49&quot; 
+                 Max.                  NA's 
+&quot;2016-11-15 13:39:47&quot;                 &quot;577&quot; 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+FromIntakePortal 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: logical 
+Unique: 1 
+Miss: 622 
+Summary: 
+   Mode    NA's 
+logical     622 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+Esl 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: integer 
+Unique: 3 
+Miss: 601 
+Summary: 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+ 0.0000  1.0000  1.0000  0.9524  1.0000  1.0000     601 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+ParentPatientId 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: integer 
+Unique: 1 
+Miss: 622 
+Summary: 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+     NA      NA      NA     NaN      NA      NA     622 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+ContainsLiabilitySymptom 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: integer 
+Unique: 2 
+Miss: 121 
+Summary: 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+      0       0       0       0       0       0     121 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+PhaseChange 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: integer 
+Unique: 2 
+Miss: 0 
+Summary: 
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+0.000000 0.000000 0.000000 0.001608 0.000000 1.000000 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+LastPhaseReview 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: POSIXct POSIXt 
+Unique: 178 
+Miss: 445 
+Summary: 
+                 Min.               1st Qu.                Median                  Mean               3rd Qu. 
+&quot;2016-01-28 08:47:09&quot; &quot;2016-04-25 11:36:41&quot; &quot;2016-06-28 11:02:59&quot; &quot;2016-07-06 10:12:14&quot; &quot;2016-09-14 15:14:13&quot; 
+                 Max.                  NA's 
+&quot;2016-11-15 10:07:30&quot;                 &quot;445&quot; 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+LastERHospitalizationDischargeDate 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: POSIXct POSIXt 
+Unique: 193 
+Miss: 400 
+Summary: 
+                 Min.               1st Qu.                Median                  Mean               3rd Qu. 
+&quot;2015-03-19 00:00:00&quot; &quot;2015-10-03 00:00:00&quot; &quot;2016-02-17 00:00:00&quot; &quot;2016-02-07 16:46:12&quot; &quot;2016-06-21 12:00:00&quot; 
+                 Max.                  NA's 
+&quot;2016-11-12 00:00:00&quot;                 &quot;400&quot; 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+LastHospitalizationAdmissionDate 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: POSIXct POSIXt 
+Unique: 222 
+Miss: 339 
+Summary: 
+                 Min.               1st Qu.                Median                  Mean               3rd Qu. 
+&quot;2015-03-01 00:00:00&quot; &quot;2015-10-12 12:00:00&quot; &quot;2016-02-19 00:00:00&quot; &quot;2016-02-15 06:45:34&quot; &quot;2016-07-01 12:00:00&quot; 
+                 Max.                  NA's 
+&quot;2016-11-15 00:00:00&quot;                 &quot;339&quot; 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+NeedsAnxietyGAD7 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: integer 
+Unique: 2 
+Miss: 621 
+Summary: 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+      0       0       0       0       0       0     621 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+NeedsDepressionPHQ2 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: integer 
+Unique: 2 
+Miss: 621 
+Summary: 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+      0       0       0       0       0       0     621 
+
+
+-------------------------------------------------------------------------------------------------------------- 
+ReferralPatientId 
+-------------------------------------------------------------------------------------------------------------- 
+Label:  
+Class: integer 
+Unique: 1 
+Miss: 622 
+Summary: 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+     NA      NA      NA     NaN      NA      NA     622 </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <hr />
 <p> </p>
 <div id="session-info" class="section level4">
 <h4>Session Info:</h4>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-output-begin eyJkYXRhIjoiUiB2ZXJzaW9uIDMuMy4yICgyMDE2LTEwLTMxKVxuUGxhdGZvcm06IHg4Nl82NC1hcHBsZS1kYXJ3aW4xMy40LjAgKDY0LWJpdClcblJ1bm5pbmcgdW5kZXI6IG1hY09TIFNpZXJyYSAxMC4xMi4zXG5cbmxvY2FsZTpcblsxXSBlbl9VUy5VVEYtOC9lbl9VUy5VVEYtOC9lbl9VUy5VVEYtOC9DL2VuX1VTLlVURi04L2VuX1VTLlVURi04XG5cbmF0dGFjaGVkIGJhc2UgcGFja2FnZXM6XG5bMV0gc3RhdHMgICAgIGdyYXBoaWNzICBnckRldmljZXMgdXRpbHMgICAgIGRhdGFzZXRzICBtZXRob2RzICAgYmFzZSAgICAgXG5cbm90aGVyIGF0dGFjaGVkIHBhY2thZ2VzOlxuWzFdIGRhdGFjbGVhbl8wLjEuMCBkcGx5cl8wLjUuMCAgICAgcHVycnJfMC4yLjIgICAgIHJlYWRyXzEuMC4wICAgICB0aWR5cl8wLjYuMCAgICAgdGliYmxlXzEuMiAgICAgXG5bN10gZ2dwbG90Ml8yLjIuMSAgIHRpZHl2ZXJzZV8xLjAuMFxuXG5sb2FkZWQgdmlhIGEgbmFtZXNwYWNlIChhbmQgbm90IGF0dGFjaGVkKTpcbiBbMV0gUmNwcF8wLjEyLjkgICAgICBrbml0cl8xLjE1LjEgICAgIG1hZ3JpdHRyXzEuNSAgICAgbXVuc2VsbF8wLjQuMyAgICBjb2xvcnNwYWNlXzEuMy0yIFI2XzIuMi4wICAgICAgICBcbiBbN10gc3RyaW5ncl8xLjEuMCAgICBwbHlyXzEuOC40ICAgICAgIHRvb2xzXzMuMy4yICAgICAgZ3JpZF8zLjMuMiAgICAgICBndGFibGVfMC4yLjAgICAgIERCSV8wLjUtMSAgICAgICBcblsxM10gaHRtbHRvb2xzXzAuMy41ICB5YW1sXzIuMS4xNCAgICAgIGxhenlldmFsXzAuMi4wICAgYXNzZXJ0dGhhdF8wLjEgICBkaWdlc3RfMC42LjExICAgIHJwcm9qcm9vdF8xLjIgICBcblsxOV0gYmFzZTY0ZW5jXzAuMS0zICBldmFsdWF0ZV8wLjEwICAgIHJtYXJrZG93bl8xLjMgICAgc3RyaW5naV8xLjEuMiAgICBzY2FsZXNfMC40LjEgICAgIGJhY2twb3J0c18xLjAuNSBcblsyNV0ganNvbmxpdGVfMS4yICAgIFxuIn0= -->
+<pre><code>R version 3.3.2 (2016-10-31)
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+Running under: macOS Sierra 10.12.3
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] dataclean_0.1.0 dplyr_0.5.0     purrr_0.2.2     readr_1.0.0     tidyr_0.6.0     tibble_1.2     
+[7] ggplot2_2.2.1   tidyverse_1.0.0
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.9      knitr_1.15.1     magrittr_1.5     munsell_0.4.3    colorspace_1.3-2 R6_2.2.0        
+ [7] stringr_1.1.0    plyr_1.8.4       tools_3.3.2      grid_3.3.2       gtable_0.2.0     DBI_0.5-1       
+[13] htmltools_0.3.5  yaml_2.1.14      lazyeval_0.2.0   assertthat_0.1   digest_0.6.11    rprojroot_1.2   
+[19] base64enc_0.1-3  evaluate_0.10    rmarkdown_1.3    stringi_1.1.2    scales_0.4.1     backports_1.0.5 
+[25] jsonlite_1.2    </code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ2xlYW4gUGF0aWVudCBUYWJsZSIKZGF0ZTogImByIFN5cy5EYXRlKClgIgpvdXRwdXQ6IAogIGh0bWxfbm90ZWJvb2s6CiAgICB0b2M6IHRydWUKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwogICAgIyBjc3M6IGN1c3RvbS1jc3MuY3NzCiAgd29yZF9kb2N1bWVudDoKICAgIHJlZmVyZW5jZV9kb2N4OiB3b3JkX3N0eWxlX3RlbXBsYXRlXzAxLmRvY3gKLS0tCgpgYGB7ciBsb2FkX3BhY2thZ2VzLCBtZXNzYWdlPUZBTFNFfQojIExvYWQgcGFja2FnZXMKbGlicmFyeSh0aWR5dmVyc2UpCmBgYAoKIyBMb2FkIHBhdGllbnQgdGFibGUKCmBgYHtyfQpwYXRpZW50IDwtIHJlYWRfcmRzKHBhdGggPSAiLi4vZGF0YS9QYXRpZW50LlJEYXRhIikKYGBgCgoKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KCiZuYnNwOwoKIyMjIyBTZXNzaW9uIEluZm86CmBgYHtyIHNlc3Npb25faW5mbywgZWNobz1GQUxTRX0Kc2Vzc2lvbkluZm8oKQpgYGAK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ2xlYW4gUGF0aWVudCBUYWJsZSIKZGF0ZTogImByIFN5cy5EYXRlKClgIgpvdXRwdXQ6IAogIGh0bWxfbm90ZWJvb2s6CiAgICB0b2M6IHRydWUKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwogICAgIyBjc3M6IGN1c3RvbS1jc3MuY3NzCiAgd29yZF9kb2N1bWVudDoKICAgIHJlZmVyZW5jZV9kb2N4OiB3b3JkX3N0eWxlX3RlbXBsYXRlXzAxLmRvY3gKLS0tCgojIExvYWQgcGFja2FnZXMKCmBgYHtyIGxvYWRfcGFja2FnZXMsIG1lc3NhZ2U9RkFMU0V9CiMgQ3JhbgpsaWJyYXJ5KHRpZHl2ZXJzZSkKCiMgR2l0SHViCiMgZGV2dG9vbHM6Omluc3RhbGxfZ2l0aHViKCJtYmNhbm4wMS9kYXRhY2xlYW4iKQpsaWJyYXJ5KGRhdGFjbGVhbikKYGBgCgojIExvYWQgcGF0aWVudCB0YWJsZQoKYGBge3J9CnBhdGllbnQgPC0gcmVhZF9yZHMocGF0aCA9ICIuLi9kYXRhL1BhdGllbnQuUkRhdGEiKQpgYGAKCiMgQ29lcmNlIHZhcmlhYmxlIHR5cGVzCgpgYGB7cn0KIyBUcmFuc2ZvciBkb2IgdG8gYWdlCnBhdGllbnQgPC0gcGF0aWVudCAlPiUgCiAgbXV0YXRlKAogICAgQ3JlYXRlZCAgICAgICAgICAgICAgICAgICAgICAgICAgICA9IGFzLlBPU0lYY3QoQ3JlYXRlZCksCiAgICBEYXRlT2ZCaXJ0aCAgICAgICAgICAgICAgICAgICAgICAgID0gYXMuRGF0ZShEYXRlT2ZCaXJ0aCksCiAgICBVbmFibGVUb1JlYWNoT24gICAgICAgICAgICAgICAgICAgID0gYXMuUE9TSVhjdChVbmFibGVUb1JlYWNoT24pLAogICAgTGFzdFBoYXNlUmV2aWV3ICAgICAgICAgICAgICAgICAgICA9IGFzLlBPU0lYY3QoTGFzdFBoYXNlUmV2aWV3KSwKICAgIExhc3RFUkhvc3BpdGFsaXphdGlvbkRpc2NoYXJnZURhdGUgPSBhcy5QT1NJWGN0KExhc3RFUkhvc3BpdGFsaXphdGlvbkRpc2NoYXJnZURhdGUpLAogICAgTGFzdEhvc3BpdGFsaXphdGlvbkFkbWlzc2lvbkRhdGUgICA9IGFzLlBPU0lYY3QoTGFzdEhvc3BpdGFsaXphdGlvbkFkbWlzc2lvbkRhdGUpCiAgKQpgYGAKCiMgTWVyZ2Ugd2l0aCBsb29rdXAgdGFibGVzCgpgYGB7cn0KIyBOZWVkIHRvIGltcG9ydCB0aGVzZSBvbiBQQwpgYGAKCgojIENvZGVib29rCgpgYGB7cn0KbGFiZWxzIDwtIGMoCiAgIlBhdGllbnQgSWQiLAogICIiLAogICJOYW1lIG9mIHN0YWZmIHRoYXQgY3JlYXRlZCBwYXRpZW50IHJlY29yZCBlbnRyeSIsCiAgIkRhdGUgcGF0aWVudCByZWNvcmQgZW50cnkgd2FzIGNyZWF0ZWQiLAogICIiLAogICIiLAogICJQYXRpZW50IGRhdGUgb2YgYmlydGgiLAogICJQYXRpZW50IGdlbmRlciIsCiAgIlBhdGllbnQgY2l0eSIsCiAgIlBhdGllbnQgc3RhdGUiLAogICJQYXRpZW50IHppcCBjb2RlIiwKICAiIiwKICAiUGF0aWVudCBtYXJpdGFsIHN0YXR1cyIsCiAgIlBhdGllbnQgcmFjZSIsCiAgIiIsCiAgIiIsCiAgIiIsCiAgIiIsCiAgIiIsCiAgIiIsCiAgIiIsCiAgIiIsCiAgIiIsCiAgIiIsCiAgIiIsCiAgIiIsCiAgIiIsCiAgIiIsCiAgIiIsCiAgIiIsCiAgIiIsCiAgIiIKKQoKY29kZWJvb2socGF0aWVudCwgbGFiZWwgPSBsYWJlbHMpCmBgYAoKCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQoKJm5ic3A7CgojIyMjIFNlc3Npb24gSW5mbzoKYGBge3Igc2Vzc2lvbl9pbmZvLCBlY2hvPUZBTFNFfQpzZXNzaW9uSW5mbygpCmBgYAo=</div>
 
 
 

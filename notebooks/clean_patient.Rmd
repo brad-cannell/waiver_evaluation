@@ -13,9 +13,15 @@ output:
     reference_docx: word_style_template_01.docx
 ---
 
-```{r load_packages, message=FALSE}
 # Load packages
+
+```{r load_packages, message=FALSE}
+# Cran
 library(tidyverse)
+
+# GitHub
+# devtools::install_github("mbcann01/dataclean")
+library(dataclean)
 ```
 
 # Load patient table
@@ -23,6 +29,70 @@ library(tidyverse)
 ```{r}
 patient <- read_rds(path = "../data/Patient.RData")
 ```
+
+# Coerce variable types
+
+```{r}
+# Transfor dob to age
+patient <- patient %>% 
+  mutate(
+    Created                            = as.POSIXct(Created),
+    DateOfBirth                        = as.Date(DateOfBirth),
+    UnableToReachOn                    = as.POSIXct(UnableToReachOn),
+    LastPhaseReview                    = as.POSIXct(LastPhaseReview),
+    LastERHospitalizationDischargeDate = as.POSIXct(LastERHospitalizationDischargeDate),
+    LastHospitalizationAdmissionDate   = as.POSIXct(LastHospitalizationAdmissionDate)
+  )
+```
+
+# Merge with lookup tables
+
+```{r}
+# Need to import these on PC
+```
+
+
+# Codebook
+
+```{r}
+labels <- c(
+  "Patient Id",
+  "",
+  "Name of staff that created patient record entry",
+  "Date patient record entry was created",
+  "",
+  "",
+  "Patient date of birth",
+  "Patient gender",
+  "Patient city",
+  "Patient state",
+  "Patient zip code",
+  "",
+  "Patient marital status",
+  "Patient race",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  ""
+)
+
+codebook(patient, label = labels)
+```
+
 
 
 
