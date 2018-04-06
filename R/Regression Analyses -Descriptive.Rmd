@@ -1,0 +1,78 @@
+---
+title: "Analyze Waiver Data (No Control Group)"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE}
+library(plyr)
+library(dplyr)
+library(stargazer)
+```
+
+
+## Data Manipulation
+Set unknowns to missing and collapse categories for easier interpretation 
+
+```{r }
+
+setwd("C:\\Users\\mdl0193\\Dropbox\\RF9987 - 1115 Waiver Managing Chronically Ill Medicaid Patients Using Interventional Telehealth\\waiverEvaluation\\R")
+
+#read raw data and clean any discrepancies
+analyze<-read.csv("WaiverAnalyze.csv")
+analyze<-mutate(analyze, time_till=ifelse(time_till<0, NA, time_till))
+analyze<-mutate(analyze, Gender=ifelse(Gender=="U", NA, Gender))
+
+#recategorize
+analyze<-mutate(analyze, Male=as.numeric(revalue(as.character(Gender), c('2'='1', '1'='0'))))
+analyze<-mutate(analyze, White=ifelse(Race=="Caucasian", 1, 0))
+analyze<-mutate(analyze, Partner=revalue(MaritalStatus, c("Divorced"="No","Life Partner"="Yes","Married"="Yes","Separated"="No","Single"="No","Unknown"=NA,"Widowed"="No")))
+analyze$inpatient<-factor(analyze$inpatient,levels=c(0,1),labels=c("No","Yes"))
+```
+
+## Logistic Regressions 
+OR and CIs predicting an inpatient hospitilization 
+Only significant effect is time between discharge and TM start, but in the opposite of the theorized direction. Is it possible that "healthier" patients were less prioritized for TM start?
+
+Same pattern seen in results for ER visits
+```{r}
+attach(analyze)
+  
+  mylogit<-glm(inpatient~Male,family="binomial")
+  exp(cbind(OR = coef(mylogit), confint(mylogit)))
+  
+  mylogit<-glm(inpatient~White,family="binomial")
+  exp(cbind(OR = coef(mylogit), confint(mylogit)))
+  
+   mylogit<-glm(inpatient~Partner,family="binomial")
+  exp(cbind(OR = coef(mylogit), confint(mylogit)))
+  
+
+  mylogit<-glm(inpatient~time_till,family="binomial")
+  exp(cbind(OR = coef(mylogit), confint(mylogit)))
+  
+  mylogit<-glm(inpatient~age,family="binomial")
+  exp(cbind(OR = coef(mylogit), confint(mylogit)))
+  
+ 
+```
+
+
+#Sanity Check on time till start tm start
+Quick descriptive to make sure I didnt bungle the regression
+```{r}
+summarise(group_by(analyze,inpatient),
+          mean=mean(time_till,na.rm=TRUE), sd=sd(time_till,na.rm=TRUE))
+```
+
+```{r}
+source("C:/Users/mdl0193/Documents/test_sg.R")
+```
+
+
+
+

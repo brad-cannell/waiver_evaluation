@@ -41,14 +41,19 @@ run;
 
 * Where 'sql server' is the name of the Data Source configured in the ODBC 
 * Administrator; 
+
+
+
+
 libname ccs odbc 
 	dsn = "CCS" 
-	user = "CCS-RPTSQLUser" 
-	pw = "CCS2016UNT";
+	user = "CCMRPT_UNT" 
+	pw = "Tasewe-E3recUBRE"
+	schema="dbo";
 
 * View all tables in the database;
 proc sql;
-	CONNECT TO odbc(dsn = "CCS" user = "CCS-RPTSQLUser" pw = "CCS2016UNT");
+	CONNECT TO odbc(dsn = "CCS" user = "CCMRPT_UNT" pw = "Tasewe-E3recUBRE");
 	CREATE TABLE all_tables AS 
 		SELECT * 
 			FROM connection to odbc(ODBC::SQLTables);
@@ -61,8 +66,8 @@ quit;
 
 libname lookup odbc 
 	dsn = "CCS" 
-	user = "CCS-RPTSQLUser" 
-	pw = "CCS2016UNT"
+	user = "CCMRPT_UNT" 
+	pw = "Tasewe-E3recUBRE"
 	schema = "lookup";
 
 * After connection is established, start importing tables of interest as SAS

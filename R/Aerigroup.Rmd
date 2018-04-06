@@ -1,0 +1,59 @@
+---
+title: "Descriptives of Amerigroup"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE}
+library(plyr)
+library(dplyr)
+library(sjPlot)
+```
+
+
+## Data Manipulation
+First we need to read in and clean the data on patient demographics and hospitalizations 
+
+```{r }
+
+setwd("C:\\Users\\mdl0193\\Dropbox\\RF9987 - 1115 Waiver Managing Chronically Ill Medicaid Patients Using Interventional Telehealth\\waiverEvaluation\\data")
+
+#read raw data
+data<-read.csv("amerigroup.csv")
+
+#ICD codes to filter
+pattern<-c("Z96","Z4","Z50","Z51","Z52","Z53","C","D1","D2","D3","D4")
+data1<-filter(data, !(grepl(paste(pattern, collapse="|"), ADMIT_DX)))
+#count number of instances per ID
+counts<-count(data1,MCAID_ID)
+
+counts<-mutate(counts,readmit=ifelse(n>1,1,0))
+
+#add readmit indicator back to data
+merged<-left_join(counts,data,by="MCAID_ID")
+
+#clean duplicates
+merged<-distinct(merged,MCAID_ID,.keep_all=TRUE)
+#play around with age cut off for amerigroup to approx the age distribution of telehealth pop (mean~56), will need to age match for analysis
+merged<-filter(merged,!(AGE<40))
+
+
+make.table2<-select(merged, c(GENDER,readmit,AGE))
+
+sjt.frq(make.table2)
+
+
+```
+
+
+
+## Demographic and Hospitalization Frequencies
+
+```{r, echo=FALSE}
+sjt.frq(make.table)
+
+```
+

@@ -1,0 +1,143 @@
+---
+title: "Descriptives for Waiver Sample"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE}
+library(plyr)
+library(dplyr)
+library(sjPlot)
+library(eeptools)
+```
+
+
+## Data Manipulation
+First we need to read in and clean the data on patient demographics and hospitalizations 
+
+```{r }
+
+setwd("C:\\Users\\mdl0193\\Dropbox\\RF9987 - 1115 Waiver Managing Chronically Ill Medicaid Patients Using Interventional Telehealth\\waiverEvaluation\\data\\dbo_CSV")
+
+#read raw data
+demos<-read.csv("patient.csv")
+hospital<-read.csv("HospitalizationEvent.csv")
+home<-read.csv("HomeHealthOasisQuestion.csv")
+
+demos<-mutate(demos, PatientId=Id)
+
+
+#clean duplicates
+demos<-distinct(demos,Id,.keep_all=TRUE)
+home<-distinct(home,PatientId,.keep_all=TRUE)
+
+#select just the relevant date variables from home health data
+home<-select(home,PatientId,hosp_dc_date,tm_start,soc_str)
+
+```
+
+
+Patients could have had multiple different types of hospitalization events over the study period. We need to first seperate hospital data by visit type then remove dupes. Currently unsure what to do about those with missing event types. 
+
+```{r}
+hosp<-filter(hospital, EventTypeId==1)
+obser23<-filter(hospital, EventTypeId==2)
+outp<-filter(hospital, EventTypeId==3)
+er<-filter(hospital, EventTypeId==4)
+miss<-filter(hospital, is.na(EventTypeId))
+
+hosp<-distinct(hosp,PatientId,.keep_all=TRUE)
+obser23<-distinct(obser23,PatientId,.keep_all=TRUE)
+outp<-distinct(outp,PatientId,.keep_all=TRUE)
+er<-distinct(er,PatientId,.keep_all=TRUE)
+```
+
+
+We also need to filter out "planned" readmissions (cancer treatments, etc). 
+```{r}
+hosp<-filter(hosp, !(AdmissionReasonId %in% c(19,28,29,36,37) ))
+obser23<-filter(obser23, !(AdmissionReasonId %in% c(19,28,29,36,37) ))
+outp<-filter(outp, !(AdmissionReasonId %in% c(19,28,29,36,37) ))
+er<-filter(er, !(AdmissionReasonId %in% c(19,28,29,36,37) ))
+```
+
+
+Merge in data with to filter 30 day readmits. 
+Dropped PatientID 8875,7139, and 7270- all admission data are before discharge date. 
+Replaced date for PatientId 11556 with first readmission after discharge date (have data on admissions before our anchoring discharge date)
+
+```{r}
+
+
+#merge in date variables for 30 day filtering
+
+#for hospitilization
+merged_hosp<-left_join(hosp,home,by="PatientId")
+merged_hosp<-distinct(merged_hosp)
+merged_hosp<-filter(merged_hosp, !(PatientId %in% c(8875,7139,7270)))
+
+merged_hosp<-mutate(merged_hosp, AdmissionDate=ifelse(PatientId == 11556, "2016-10-02", as.character(AdmissionDate)))
+
+merged_hosp<-mutate(merged_hosp,readmit_days=as.Date(merged_hosp$AdmissionDate)-as.Date(merged_hosp$hosp_dc_date,format="%m/%d/%Y"))
+
+merged_hosp<-filter(merged_hosp, readmit_days<=30)
+
+#for er
+merged_er<-left_join(er,home,by="PatientId")
+merged_er<-distinct(merged_er)
+merged_er<-filter(merged_er, !(PatientId %in% c(8875)))
+
+merged_er<-mutate(merged_er,readmit_days=as.Date(merged_er$AdmissionDate)-as.Date(merged_er$hosp_dc_date,format="%m/%d/%Y"))
+
+merged_er<-filter(merged_er, readmit_days<=30)
+
+```
+
+Then we create indicators for hospitalization event type, and merge them back into the patient demographic data. CURRENTLY ASSUMES THAT THERE IS A 1:1 MATCH BETWEEN THE PATIENT FILE AND THE HOME HEALTH FILE... AND THERE DOES NOT APPEAR TO BE (807 in patient file, 816 in home health)
+
+```{r}
+#add variable for "in this dataframe"
+merged_hosp<-mutate(merged_hosp, inpatient=1)
+merged_er<-mutate(merged_er, er.visit=1)
+
+#drop everything but previously created variables and patientid
+
+merged_hosp<-select(merged_hosp, c(PatientId,inpatient))
+merged_er<-select(merged_er, c(PatientId,er.visit))
+
+#merge indicators back into patient file
+joins<-list(merged_er,merged_hosp)
+merged<-join_all(joins, by="PatientId",type="full")
+merged<-distinct(merged)
+for.descrip<-left_join(demos,merged,by="PatientId")
+for.descrip<-left_join(home,for.descrip,by="PatientId")
+
+for.descrip<-mutate(for.descrip,inpatient=replace(inpatient, is.na(inpatient), 0))
+for.descrip<-mutate(for.descrip,er.visit=replace(er.visit, is.na(er.visit), 0))
+
+make.table<-select(for.descrip, c(Gender, MaritalStatus, Race, inpatient,er.visit))
+```
+
+
+```{r}
+#make the analysis dataset for logistic analysis in next scrip
+for.analyze<-select(for.descrip,PatientId,DateOfBirth,Gender,MaritalStatus,Race,PrimaryLanguage,er.visit,inpatient)
+for.analyze<-mutate(for.analyze,age=age_calc(as.Date(for.analyze$DateOfBirth),Sys.Date(),units="years"))
+for.analyze<-left_join(home,for.analyze,by="PatientId")
+for.analyze<-mutate(for.analyze,time_till=as.Date(for.analyze$tm_start,format="%m/%d/%Y")-as.Date(for.analyze$hosp_dc_date,format="%m/%d/%Y"))
+
+write.csv(for.analyze,file="C:\\Users\\mdl0193\\Dropbox\\RF9987 - 1115 Waiver Managing Chronically Ill Medicaid Patients Using Interventional Telehealth\\waiverEvaluation\\R\\WaiverAnalyze.csv")
+
+```
+
+
+## Demographic and Hospitalization Frequencies
+
+```{r, echo=FALSE}
+sjt.frq(make.table)
+
+```
+

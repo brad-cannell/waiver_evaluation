@@ -1,0 +1,213 @@
+---
+title: "DY6 Recruitment"
+output: html_notebook
+---
+
+```{r message=FALSE}
+# Load packages
+library(tidyverse)
+library(odbc)
+
+# Load functions
+about_data <- function(x) {
+  cat(nrow(x), "observations and", length(x), "variables in the data \n")
+}
+
+dup_ids <- function(x) {
+  dups <- duplicated(x)
+  ids <- x[dups]
+  cat("There are", sum(dups), "duplicate ID's \n")
+  cat("Duplicate ID's: \n")
+  print(ids)
+}
+```
+
+# Connect to CCM database
+
+```{r}
+# con <- DBI::dbConnect(odbc::odbc(),
+#                       driver = "ODBC Driver 13 for SQL Server",
+#                       server = "10.10.1.198",
+#                       database = "Navigator_UNT",
+#                       uid = "CCMRPT_UNT",
+#                       pwd = "Tasewe-E3recUBRE")
+```
+
+# View available tables
+
+```{r}
+# tables_look<-dbListTables(con, schema="lookup")
+# tables_dbo<-dbListTables(con, schema="dbo")
+```
+
+# Read in needed data
+
+```{r}
+# table <- tables_dbo[48]
+# query <- paste("SELECT * FROM", table)
+# df <- dbFetch((dbSendQuery(con, query)))
+```
+
+```{r}
+# dbExistsTable(con, "HomeHealthOasisQuestion")
+```
+
+# Close the connection
+
+```{r}
+# dbDisconnect(con) 
+```
+
+Not currently working. However, Doug already imported this data and saved it as a CSV file. I'll come back to connecting to the database at some point. For now, just get recruitment numbers from the CSV file.
+
+# Load data
+
+```{r message=FALSE}
+# Read in data
+df <- read_csv(file = "../data/dbo_CSV/HomeHealthOasisQuestion.csv")
+
+# Convert date columns from type character to type date
+# Select date columns
+dates <- c("dc_str", "hosp_dc_date", "soc_str", "tm_start", "tm_stop", "ns_intervention_str")
+
+# Make the conversion and overwrite the data
+df <- df %>% 
+  mutate(ContactDate = as.Date(df$ContactDate)) %>% 
+  map_at(dates, ~ as.Date(., format = "%m/%d/%Y")) %>% 
+  as_tibble()
+
+about_data(df) # 2226 observations and 25 variables in the data
+```
+
+How many unique people?
+
+```{r echo=FALSE}
+df$PatientId %>% unique() %>% length() # 666
+```
+
+This data is current as of:
+
+```{r echo=FALSE}
+max(df$soc_str, na.rm = TRUE) # "2017-04-08"
+```
+
+-----
+
+# Calculate enrollment
+
+## Only keep rows with m0100 = 1
+
+```{r}
+# m0100: This assessment is currently being completed for the following reason:
+df$m0100 <- factor(df$m0100,
+  levels = c(1, 8, 9),
+  labels = c("Start of care", "Death at home", "Discharge"))
+```
+
+## Sort by patient id
+
+```{r}
+df <- df %>% arrange(PatientId, soc_str)
+```
+
+## Keep only 1's from M0100 (start of care)
+
+```{r}
+df <- filter(df, m0100 == "Start of care")
+about_data(df) # 685 observations and 25 variables in the data
+```
+
+# Enrollment
+
+* For enrollment purposes, 2016-10-01 is the magic day for DY6 - even though we actually hit 400 before that date.
+ 
+* Individuals with a start of care date prior to 2016-10-01, who were discharged from services on or after 2016-10-01, are considered rollover patients.
+ 
+* Individuals with a start of care data on or after 2016-10-01 are DY6 (non-rollover) enrollments.
+
+## How many people were actively enrolled on 2016-10-01 (rollovers)?
+
+```{r}
+rollovers <- df %>% 
+  filter(soc_str < "2016-10-01" & (dc_str >= "2016-10-01" | is.na(dc_str)))
+
+about_data(rollovers) # 234 observations and 25 variables in the data 
+```
+
+### How many of these are duplicates?
+
+```{r}
+dups <- dup_ids(rollovers$PatientId)
+```
+
+```{r}
+rollovers %>% filter(PatientId %in% dups)
+```
+&nbsp;
+
+I will email CCM to get clarification on which row to keep.
+
+## How many people were newly enrolled on or after 2016-10-01?
+
+```{r}
+dy6_new <- df %>% 
+  filter(soc_str >= "2016-10-01")
+
+about_data(dy6_new) # 123 observations and 25 variables in the data  
+```
+
+## Append the rollovers and the new admits
+
+```{r}
+dy6 <- bind_rows(rollovers, dy6_new)
+```
+
+## Check for duplicates
+
+```{r}
+dups <- dup_ids(dy6$PatientId)
+```
+&nbsp;
+
+I will email CCM to get clarification on which row to keep.
+
+```{r}
+dy6 %>% distinct(PatientId) %>% nrow() # 356
+```
+&nbsp;
+
+Are any enrolled outside of the 14-day window?
+
+```{r}
+dy6 %>% filter(days_since_hosp_dc > 14 | is.na(days_since_hosp_dc)) %>% nrow() # 1
+```
+
+```{r}
+dy6 %>% filter(days_since_hosp_dc > 14 | is.na(days_since_hosp_dc))
+```
+
+
+# Enrollment Summary
+
+There were 233 people (234 observations) that were enrolled before 2016-10-01, and were discharged on or after 2016-10-01. These are rollover patients.
+
+There were an additional 123 people with a start of care date on or after 2016-10-01. These people are new enrollments within DY6
+
+As of this report, there are 356 DY6 enrollments.
+
+However, one person (15379) may not count because of enrollment outside the 14-day window. That brings the new count to 355.
+
+All 355 people have only one DY6 enrollment. However, they may have a previous enrollment in other DY's. This is allowed.
+
+All 355 people were enrolled within 14 days of hospital discharge.
+
+
+-------------------------------------------------------------------------------
+
+&nbsp;
+
+#### Session Info:
+
+```{r session_info, echo=FALSE}
+sessionInfo()
+```

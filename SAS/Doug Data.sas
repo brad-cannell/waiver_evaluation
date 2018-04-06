@@ -41,14 +41,21 @@ run;
 
 * Where 'sql server' is the name of the Data Source configured in the ODBC 
 * Administrator; 
+
+*Use Open VPN;
+*vpn username: CCMRPT_UNT;
+*vpn password: 5eC$7S=DagapU2Ut;
+
+
 libname ccs odbc 
 	dsn = "CCS" 
-	user = "CCS-RPTSQLUser" 
-	pw = "CCS2016UNT";
+	user = "CCMRPT_UNT" 
+	pw = "Tasewe-E3recUBRE"
+	schema="dbo";
 
 * View all tables in the database;
 proc sql;
-	CONNECT TO odbc(dsn = "CCS" user = "CCS-RPTSQLUser" pw = "CCS2016UNT");
+	CONNECT TO odbc(dsn = "CCS" user = "CCMRPT_UNT" pw = "Tasewe-E3recUBRE");
 	CREATE TABLE all_tables AS 
 		SELECT * 
 			FROM connection to odbc(ODBC::SQLTables);
@@ -61,8 +68,8 @@ quit;
 
 libname lookup odbc 
 	dsn = "CCS" 
-	user = "CCS-RPTSQLUser" 
-	pw = "CCS2016UNT"
+	user = "CCMRPT_UNT" 
+	pw = "Tasewe-E3recUBRE"
 	schema = "lookup";
 
 * After connection is established, start importing tables of interest as SAS
@@ -77,24 +84,27 @@ libname lookup odbc
 
 * Also, create a library to strore newly created SAS data sets;
 
-libname waiver "C:\Users\mdl0193\Dropbox\RF9987 - 1115 Waiver Managing Chronically Ill Medicaid Patients Using Interventional Telehealth\waiverEvaluation\data";
+libname waiver "C:\Users\mdl0193\Dropbox\RF9987 - 1115 Waiver Managing Chronically Ill Medicaid Patients Using Interventional Telehealth\waiverEvaluation\data\dbo_sas";
 
-data waiver.patient;
-	set ccs.Patient;
+proc sql;
+select TABLE_NAME into :dbo_name separated by '*' from work.all_tables where TABLE_SCHEM="dbo";
+%let count2 = &sqlobs;
+quit;
+
+data test;
+set ccs.'CoordinationTrackerCocPhysicianNotifiedReason'n;
 run;
 
-data HospitalizationEvent;
-	set ccs.HospitalizationEvent;
+%macro dbo;
+%do i = 1 %to &count2;
+%let j = %scan(&dbo_name,&i,*);
+data waiver.&j;
+	set ccs."&j"n;
 run;
+%end;
+%mend;
 
-proc sort data=HospitalizationEvent out=admits nodupkey;
-by patientid progenitorid AdmissionDate;
-run;
-
-data admits;
-set admits;
-keep id patientid progenitorid admissiondate admissionreasonid eventtypeid;
-run;
+%dbo;
 
 /*check unique ids*/
 proc sort data=HospitalizationEvent out=unique nodupkey;
