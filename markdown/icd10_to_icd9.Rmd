@@ -1,0 +1,50 @@
+---
+title: "ICD 10 to ICD 9 codes"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(bfuncs)
+library(icd)
+```
+#Import ICD key
+
+```{r}
+key <- readxl::read_excel("/Volumes/sph_research/Waiver Evaluation/Old icd stuff/ICD10 to ICD9 Bridge File.xlsx")
+```
+#Import Waiver Patient Data w/ ICD codes
+
+```{r}
+waiver_patients <- read.csv("/Volumes/sph_research/Waiver Evaluation/dbo_CSV/PatientDiagnosis.csv")
+```
+
+```{r}
+about_data(waiver_patients) #13134 observations, 10 variables
+```
+
+
+#Join ICD9 codes to waiver_patients
+
+```{r}
+colnames(waiver_patients)[colnames(waiver_patients)=="Code"] <- "ICD10"
+```
+
+
+```{r}
+waiver_patients_icd9 <- waiver_patients %>%
+  left_join(key, by = "ICD10") %>%
+  print()
+```
+
+```{r}
+about_data(waiver_patients_icd9) #17089 observations, 11 variables
+```
+Why did the number of observations increase?
+
+#Trying to get Disease Category from ICD9 Codes for Matching
+
+```{r}
+
+```
+
