@@ -10,6 +10,12 @@ library(icd)
 ```
 #Import ICD key
 
+https://www.icd10data.com/ICD10CM/Index Contains Index of all ICD10 codes for reference
+
+http://icd10cmcode.com/icd9to10conversion.php Good Resource to show that there are some instances where one ICD-9 code may equate to multiple ICD-10 codes and vice versa.
+
+All other ICD10 to ICD9 converter files you have to pay for.  For the codes I have plugged into online translator websites, this key seems to be accurate.
+
 ```{r}
 key <- readxl::read_excel("/Volumes/sph_research/Waiver Evaluation/Old icd stuff/ICD10 to ICD9 Bridge File.xlsx")
 ```
@@ -40,11 +46,50 @@ waiver_patients_icd9 <- waiver_patients %>%
 ```{r}
 about_data(waiver_patients_icd9) #17089 observations, 11 variables
 ```
-Why did the number of observations increase?
+Number of observations increased because there are instances where one ICD10 code corresponds to multiple ICD9 codes.
 
-#Trying to get Disease Category from ICD9 Codes for Matching
+
+
+#Import Control Data
 
 ```{r}
-
+control_patients <- readxl::read_excel("/Volumes/sph_research/Waiver Evaluation/UNTHSC Final W Admit Dt.xlsx")
 ```
+
+```{r}
+about_data(control_patients) #18695 observations and 17 variables
+```
+
+#Join ICD9 codes to control_patients
+
+Key ICD codes include decimal points, control patient ICD codes do not include decimal places.
+
+##Removing Decimal Places from Key
+```{r}
+key <- toString(as.matrix(key))
+```
+
+```{r}
+key <- str_remove_all(as.matrix(key), "[.]")
+```
+
+```{r}
+colnames(control_patients)[colnames(control_patients)=="ADMIT_DX"] <- "ICD10"
+```
+
+
+##Joining New Key to control_patients
+```{r}
+control_patients_icd9 <- control_patients %>%
+  left_join(key, by = "ICD10") %>%
+  print()
+```
+This doesn't work because now key is not a data frame.
+
+```{r}
+key <- data_frame(key)
+```
+
+
+
 
